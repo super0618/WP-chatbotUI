@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Chat {
+  id                    Int         @id @default(autoincrement())
+  user_id               Int
+  context_length        Int
+  model                 String
+  name                  String
+  prompt                String
+  temperature           Float
+  createdAt             DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt             DateTime?   @updatedAt
+  @@map("wp_chats")
+}
+
+model Message {
+  id                    Int         @id @default(autoincrement())
+  chat_id               Int
+  content               String      @db.Text
+  model                 String
+  role                  String
+  sequence_number       Int
+  createdAt             DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt             DateTime?   @updatedAt
+  @@map("wp_messages")
+}
+
+model Preset {
+  id                    Int         @id @default(autoincrement())
+  user_id               Int
+  context_length        Int
+  model                 String
+  name                  String
+  prompt                String      @db.Text
+  temperature           Float
+  createdAt             DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt             DateTime?   @updatedAt
+  @@map("wp_presets")
+}
+
+model Prompt {
+  id                    Int         @id @default(autoincrement())
+  user_id               Int
+  content               String      @db.Text
+  name                  String
+  createdAt             DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt             DateTime?   @updatedAt
+  @@map("wp_prompts")
+}
+
+model Folder {
+  id                    Int         @id @default(autoincrement())
+  user_id               Int
+  name                  String
+  createdAt             DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt             DateTime?   @updatedAt
+  @@map("wp_folders")
+}

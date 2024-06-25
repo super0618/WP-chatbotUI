@@ -1,0 +1,9 @@
+import { prisma } from "@/lib/prisma/prisma-client"
+
+export async function POST(req: Request) {
+  const reqData = await req.json()
+  const resData = await prisma.chat.findUnique({
+    where: { id: parseInt(reqData.id) }
+  })
+  return new Response(JSON.stringify(resData))
+}
